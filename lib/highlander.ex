@@ -82,8 +82,32 @@ defmodule Highlander do
 
   @impl true
   def init(child_spec) do
+    Process.sleep(Enum.random(10_000..15_000))
     Process.flag(:trap_exit, true)
     {:ok, register(%{child_spec: child_spec})}
+  end
+
+  def whereis(name) do
+    name
+    |> name()
+    |> :global.whereis_name()
+    |> case do
+      pid when is_pid(pid) -> GenServer.call(pid, :get_child_pid)
+      _ -> nil
+    end
+  end
+
+  @impl true
+  def handle_call(:get_child_pid, _from, state) do
+    pid =
+      state.pid
+      |> Supervisor.which_children()
+      |> case do
+        [{_, pid, _, _}] when pid not in [:restarting, :undefined] -> pid
+        _ -> nil
+      end
+
+    {:reply, pid, state}
   end
 
   @impl true
@@ -106,6 +130,8 @@ defmodule Highlander do
   defp name(%{child_spec: %{id: global_name}}) do
     {__MODULE__, global_name}
   end
+
+  defp name(name), do: name(%{child_spec: %{id: name}})
 
   defp handle_conflict(_name, pid1, pid2) do
     Process.exit(pid2, :name_conflict)
