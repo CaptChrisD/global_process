@@ -76,13 +76,13 @@ defmodule Highlander do
 
     %{
       id: child_child_spec.id,
-      start: {GenServer, :start_link, [__MODULE__, child_child_spec, []]}
+      start: {GenServer, :start_link, [__MODULE__, child_child_spec, []]},
+      restart: :transient
     }
   end
 
   @impl true
   def init(child_spec) do
-    Process.sleep(Enum.random(10_000..15_000))
     Process.flag(:trap_exit, true)
     {:ok, register(%{child_spec: child_spec})}
   end
@@ -95,6 +95,13 @@ defmodule Highlander do
       pid when is_pid(pid) -> GenServer.call(pid, :get_child_pid)
       _ -> nil
     end
+  end
+
+  def terminate_child(name) do
+    name
+    |> name()
+    |> :global.whereis_name()
+    |> Supervisor.stop(:normal)
   end
 
   @impl true
@@ -121,7 +128,8 @@ defmodule Highlander do
   end
 
   @impl true
-  def terminate(reason, %{pid: pid}) do
+  def terminate(reason, %{pid: pid} = state) do
+    unregister_name(name(state))
     :ok = Supervisor.stop(pid, reason)
   end
 
@@ -136,6 +144,10 @@ defmodule Highlander do
   defp handle_conflict(_name, pid1, pid2) do
     Process.exit(pid2, :name_conflict)
     pid1
+  end
+
+  defp unregister_name(state) do
+    :ok = :global.unregister_name(name(state))
   end
 
   defp register(state) do
