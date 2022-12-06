@@ -118,6 +118,10 @@ defmodule Highlander do
   end
 
   @impl true
+  def handle_info({:DOWN, ref, :process, _, :normal}, %{ref: ref} = state) do
+    {:noreply, state}
+  end
+
   def handle_info({:DOWN, ref, :process, _, _}, %{ref: ref} = state) do
     {:noreply, register(state)}
   end
