@@ -67,12 +67,9 @@ defmodule GlobalProcess do
   """
 
   use GenServer
-  require Logger
 
   def child_spec(child_child_spec) do
     child_child_spec = Supervisor.child_spec(child_child_spec, [])
-
-    Logger.debug("Starting GlobalProcess with #{inspect(child_child_spec.id)} as uniqueness key")
 
     %{
       id: child_child_spec.id,
