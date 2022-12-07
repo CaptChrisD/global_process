@@ -1,7 +1,7 @@
 # Global Process
 
 Largely a clone of [Highlander](https://github.com/derekkraan/highlander). This repo adds additional
-functionality to Highlander and to help prevent confusion I have given this implimentation a new name.
+functionality to Highlander and to help prevent confusion this implimentation was given a new name.
 
 Ensures there is only a single instance of your process running in an Erlang Cluster*. Global Process
 relies heavily on Erlang's `:global` to keep track of processes. Additionally, you can terminate a process
