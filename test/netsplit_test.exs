@@ -9,7 +9,7 @@ defmodule NetsplitTest do
     for n <- nodes do
       {:ok, _} =
         rpc(n, Supervisor, :start_link, [
-          [{Highlander, {TestProc, test_pid}}],
+          [{GlobalProcess, {TestProc, test_pid}}],
           [strategy: :one_for_one]
         ])
     end
@@ -26,7 +26,7 @@ defmodule NetsplitTest do
     for n <- nodes do
       {:ok, _} =
         rpc(n, Supervisor, :start_link, [
-          [{Highlander, {TestProc, test_pid}}],
+          [{GlobalProcess, {TestProc, test_pid}}],
           [strategy: :one_for_one]
         ])
     end
@@ -61,7 +61,7 @@ defmodule NetsplitTest do
     for n <- nodes do
       {:ok, _} =
         rpc(n, Supervisor, :start_link, [
-          [{Highlander, {TestProc, test_pid}}],
+          [{GlobalProcess, {TestProc, test_pid}}],
           [strategy: :one_for_one]
         ])
     end

@@ -1,6 +1,6 @@
-defmodule HighlanderTest do
+defmodule GlobalProcessTest do
   use ExUnit.Case
-  doctest Highlander
+  doctest GlobalProcess
 
   test "runs two processes" do
     test_pid = self()
@@ -19,8 +19,8 @@ defmodule HighlanderTest do
 
     Supervisor.start_link(
       [
-        {Highlander, Map.put(child_spec, :id, :one)},
-        {Highlander, Map.put(child_spec, :id, :two)}
+        {GlobalProcess, Map.put(child_spec, :id, :one)},
+        {GlobalProcess, Map.put(child_spec, :id, :two)}
       ],
       strategy: :one_for_one
     )
@@ -46,14 +46,14 @@ defmodule HighlanderTest do
 
     Supervisor.start_link(
       [
-        {Highlander, Map.put(child_spec, :id, :one)}
+        {GlobalProcess, Map.put(child_spec, :id, :one)}
       ],
       strategy: :one_for_one
     )
 
     Supervisor.start_link(
       [
-        {Highlander, Map.put(child_spec, :id, :one)}
+        {GlobalProcess, Map.put(child_spec, :id, :one)}
       ],
       strategy: :one_for_one
     )
@@ -80,7 +80,7 @@ defmodule HighlanderTest do
     {:ok, pid1} =
       Supervisor.start_link(
         [
-          {Highlander, Map.put(child_spec, :id, :one)}
+          {GlobalProcess, Map.put(child_spec, :id, :one)}
         ],
         strategy: :one_for_one
       )
@@ -88,7 +88,7 @@ defmodule HighlanderTest do
     {:ok, pid2} =
       Supervisor.start_link(
         [
-          {Highlander, Map.put(child_spec, :id, :one)}
+          {GlobalProcess, Map.put(child_spec, :id, :one)}
         ],
         strategy: :one_for_one
       )
@@ -107,7 +107,7 @@ defmodule HighlanderTest do
 
     Supervisor.start_link(
       [
-        {Highlander,
+        {GlobalProcess,
          {Task,
           fn ->
             send(test_pid, :hello)
