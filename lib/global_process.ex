@@ -1,15 +1,15 @@
-defmodule Highlander do
+defmodule GlobalProcess do
   @moduledoc """
-  Highlander allows you to run a single globally unique process in a cluster.
+  GlobalProcess allows you to run a single globally unique process in a cluster.
 
-  Highlander uses erlang's `:global` module to ensure uniqueness, and uses `child_spec.id` as the uniqueness key.
+  GlobalProcess uses erlang's `:global` module to ensure uniqueness, and uses `child_spec.id` as the uniqueness key.
 
-  Highlander will start its child process just once in a cluster. The first Highlander process will start its child, all other Highlander processes will monitor the first process and attempt to take over when it goes down.
+  GlobalProcess will start its child process just once in a cluster. The first GlobalProcess process will start its child, all other GlobalProcess processes will monitor the first process and attempt to take over when it goes down.
 
-  _Note: You can also use Highlander to start a globally unique supervision tree._
+  _Note: You can also use GlobalProcess to start a globally unique supervision tree._
 
   ## Usage
-  Simply wrap a child process with `{Highlander, child}`.
+  Simply wrap a child process with `{GlobalProcess, child}`.
 
   Before:
 
@@ -25,7 +25,7 @@ defmodule Highlander do
 
   ```
   children = [
-    {Highlander, child_spec}
+    {GlobalProcess, child_spec}
   ]
 
   Supervisor.init(children, strategy: :one_for_one)
@@ -38,17 +38,17 @@ defmodule Highlander do
 
   ## Globally unique supervisors
 
-  You can also have Highlander run a supervisor:
+  You can also have GlobalProcess run a supervisor:
 
   ```
   children = [
-    {Highlander, {MySupervisor, arg}},
+    {GlobalProcess, {MySupervisor, arg}},
   ]
   ```
 
   ## Handling netsplits
 
-  If there is a netsplit in your cluster, then Highlander will think that the other process has died, and start a new one. When the split heals, `:global` will recognize that there is a naming conflict, and will take action to rectify that. To deal with this, Highlander simply terminates one of the two child processes with reason `:shutdown`.
+  If there is a netsplit in your cluster, then GlobalProcess will think that the other process has died, and start a new one. When the split heals, `:global` will recognize that there is a naming conflict, and will take action to rectify that. To deal with this, GlobalProcess simply terminates one of the two child processes with reason `:shutdown`.
 
   To catch this, simply trap exits in your process and add a `terminate/2` callback.
 
@@ -72,7 +72,7 @@ defmodule Highlander do
   def child_spec(child_child_spec) do
     child_child_spec = Supervisor.child_spec(child_child_spec, [])
 
-    Logger.debug("Starting Highlander with #{inspect(child_child_spec.id)} as uniqueness key")
+    Logger.debug("Starting GlobalProcess with #{inspect(child_child_spec.id)} as uniqueness key")
 
     %{
       id: child_child_spec.id,

@@ -1,9 +1,8 @@
-# Highlander
+# Global Process
 
-There can only be one (process in your cluster)! (h/t [@tuxified](https://github.com/tuxified) for the name)
+Largely a clone of [Highlander](https://github.com/derekkraan/highlander). This repo adds additional
+functionality to Highlander and to help prevent confusion I have given this implimentation a new name.
 
-Highlander ensures that your process only runs once in your system. It is based on erlang's `:global`.
-
-The entire library is only about 50 lines of code, and has no additional dependencies.
-
-# [Read the documentation](https://hexdocs.pm/highlander/Highlander.html#content) for usage instructions.
+Ensures there is only a single instance of your process running in an Erlang Cluster*. Global Process
+relies heavily on Erlang's `:global` to keep track of processes. Additionally, you can terminate a process
+-- `transient` or `temporary` -- for one off tasks that you want to ensure run but then clean themselves up.

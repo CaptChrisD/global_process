@@ -1,16 +1,16 @@
-defmodule Highlander.MixProject do
+defmodule GlobalProcess.MixProject do
   use Mix.Project
 
   def project do
     [
-      app: :highlander,
+      app: :global_process,
       version: "0.2.1",
       elixir: "~> 1.9",
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       package: package(),
-      name: "Highlander",
-      source_url: "https://github.com/derekkraan/highlander",
+      name: "Global Process",
+      source_url: "https://github.com/captchrisd/global_process",
       elixirc_paths: elixirc_paths(Mix.env())
     ]
   end
@@ -33,10 +33,10 @@ defmodule Highlander.MixProject do
 
   defp package do
     [
-      description: "There can only be one! (process in your cluster)",
+      description: "Runs a single instance of your process in an Erlang cluster.",
       licenses: ["MIT"],
-      maintainers: ["Derek Kraan"],
-      links: %{GitHub: "https://github.com/derekkraan/highlander"}
+      maintainers: ["Chris Dutton"],
+      links: %{GitHub: "https://github.com/captchrisd/global_process"}
     ]
   end
 
